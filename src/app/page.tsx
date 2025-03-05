@@ -40,8 +40,12 @@ export default function QuizPage() {
             setIsLoading(true);
             try {
                 setIsLoading(true);
-                setQuestions(mockAz900Answers);
-                setQuestion(mockAz900Answers[0]);
+                const response = await fetch('/api/answers');
+                const data: Question[] = await response.json();
+                setQuestions(data);
+                setQuestion(data[0]);
+                // setQuestions(mockAz900Answers);
+                // setQuestion(mockAz900Answers[0]);
             } catch (err) {
                 setError('No se pudieron cargar las preguntas');
             } finally {
