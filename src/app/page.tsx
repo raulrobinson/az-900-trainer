@@ -101,7 +101,7 @@ export default function QuizPage() {
 
     return (
         <div className="flex flex-col items-center justify-center px-2 py-2">
-            <h1 className="text-2xl font-bold mb-4">Simulador AZ-900</h1>
+            <h1 className="text-2xl font-bold mb-4">Entrenador AZ-900</h1>
 
             {error && <p className="text-red-500">{ error }</p>}
 
