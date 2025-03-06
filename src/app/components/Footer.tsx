@@ -1,29 +1,36 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComputer } from "@fortawesome/free-solid-svg-icons/faComputer";
+import { faTools } from "@fortawesome/free-solid-svg-icons/faTools";
 
 function Footer() {
     const currentYear = new Date().getFullYear();
     return (
-        <div className="flex justify-center items-center">
-            <footer className="text-gray-300 absolute top-0 left-0 w-full flex flex-col items-center z-20">
-                <div className="text-center py-2 px-2 rounded-lg mx-2 my-2">
-                    <p className="flex items-center justify-center text-xs whitespace-nowrap">
-                        development{' '}
-                        <FontAwesomeIcon
-                            icon={faComputer}
-                            style={{
-                                color: 'yellow',
-                                width: '1rem',
-                            }}
-                            className="mx-1"
-                        />
-                        by
-                    </p>
-                    <p className="flex items-center font-bold justify-center text-xs whitespace-nowrap">Raul Bolivar Navas</p>
-                    <p className="flex items-center justify-center text-xs whitespace-nowrap">@ {currentYear}</p>
-                </div>
-            </footer>
-        </div>
+        <footer className="text-white absolute bottom-0 left-0 w-full flex flex-col items-center sm:items-start z-20">
+            <div className="text-center py-2 px-2 rounded-lg mx-2 my-2">
+                <p className="flex items-center justify-center text-xs whitespace-nowrap">
+                    development{' '}
+                    <FontAwesomeIcon
+                        icon={faTools}
+                        style={{
+                            color: 'orange',
+                            width: '1rem',
+                        }}
+                        className="mx-1"
+                    />
+                    by
+                </p>
+                <p className="flex items-center font-bold justify-center text-xs whitespace-nowrap">
+                    Raul Bolivar Navas
+                </p>
+                <p className="flex items-center justify-center text-xs whitespace-nowrap">
+                    <a href="https://rasysbox.com" target="_blank" rel="noreferrer">
+                        https://rasysbox.com
+                    </a>
+                </p>
+                <p className="flex items-center justify-center text-xs whitespace-nowrap">
+                    @ {currentYear}
+                </p>
+            </div>
+        </footer>
     );
 }
 

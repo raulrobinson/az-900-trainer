@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity } from "typeorm";
 
-@Entity("az_900_answers_spanish", { schema: "azure_training", synchronize: false })
-export class Az900Answers {
-    @PrimaryGeneratedColumn()
+@Entity("az_900_answers_english", { schema: "azure_training", synchronize: false })
+export class English {
+    @Column({ type: "int", primary: true, name: "id" })
     id!: number;
 
     @Column({ type: "varchar", length: 2000 })
