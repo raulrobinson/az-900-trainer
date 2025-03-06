@@ -22,9 +22,7 @@ function Footer() {
                     Raul Bolivar Navas
                 </p>
                 <p className="flex items-center justify-center text-xs whitespace-nowrap">
-                    <a href="https://rasysbox.com" target="_blank" rel="noreferrer">
-                        https://rasysbox.com
-                    </a>
+                    <a href="https://rasysbox.com" target="_blank" rel="noreferrer">rasysbox.com</a>
                 </p>
                 <p className="flex items-center justify-center text-xs whitespace-nowrap">
                     @ {currentYear}

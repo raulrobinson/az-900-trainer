@@ -26,14 +26,14 @@ export default function QuizPage() {
                     onClick={ goToEnglishPage }
                     className="flex flex-col items-center space-y-2 group"
                 >
-                    <Flag code="us" className="w-30 h-26 rounded-lg shadow-lg group-hover:scale-110 transition" />
+                    <Flag code="gb" className="w-30 h-26 rounded-lg shadow-lg group-hover:scale-110 transition" />
                     <span className="text-gray-50 text-sm group-hover:text-gray-200">English</span>
                 </button>
                 <button
                     onClick={ goToSpanishPage }
                     className="flex flex-col items-center space-y-2 group"
                 >
-                    <Flag code="co" className="w-30 h-26 rounded-lg shadow-lg group-hover:scale-110 transition" />
+                    <Flag code="es" className="w-30 h-26 rounded-lg shadow-lg group-hover:scale-110 transition" />
                     <span className="text-gray-50 text-sm group-hover:text-gray-200">Español</span>
                 </button>
             </div>
