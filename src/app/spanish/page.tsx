@@ -3,7 +3,6 @@
 import {useEffect, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
-import {toast, ToastContainer} from "react-toastify";
 import Loading from "@/app/components/Loading";
 import Header from "@/app/components/Header";
 
@@ -24,7 +23,7 @@ interface Question {
     d: boolean;
 }
 
-// Function to shuffle the array of questions
+// Función para mezclar preguntas aleatoriamente
 const shuffleArray = (array: Question[]) => {
     return array.sort(() => Math.random() - 0.5);
 };
@@ -36,13 +35,12 @@ export default function SpanishPage() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [userAnswers, setUserAnswers] = useState<{ [key: string]: boolean }>({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [feedback, setFeedback] = useState<{ [key: string]: 'correct' | 'incorrect' | null }>({});
+    const [answered, setAnswered] = useState(false);
 
     useEffect(() => {
         const fetchQuestions = async () => {
-            setIsLoading(true);
             try {
-                setIsLoading(true);
                 const response = await fetch('/api/answers-spanish');
                 let data: Question[] = await response.json();
                 data = shuffleArray(data);
@@ -56,14 +54,17 @@ export default function SpanishPage() {
         };
 
         fetchQuestions();
-        setIsLoading(false);
     }, []);
 
     const handleNextQuestion = () => {
+        if (!answered) return; // No permitir avanzar sin responder
+
         if (currentIndex < questions.length - 1) {
             setCurrentIndex((prevIndex) => prevIndex + 1);
             setQuestion(questions[currentIndex + 1]);
             setUserAnswers({});
+            setFeedback({});
+            setAnswered(false);
         }
     };
 
@@ -72,6 +73,8 @@ export default function SpanishPage() {
             setCurrentIndex((prevIndex) => prevIndex - 1);
             setQuestion(questions[currentIndex - 1]);
             setUserAnswers({});
+            setFeedback({});
+            setAnswered(false);
         }
     };
 
@@ -85,25 +88,28 @@ export default function SpanishPage() {
             d: question.d,
         };
 
-        const userResponses = {
-            a: !!userAnswers.a,
-            b: !!userAnswers.b,
-            c: !!userAnswers.c,
-            d: !!userAnswers.d,
-        };
+        let newFeedback: { [key: string]: 'correct' | 'incorrect' | null } = {};
 
-        const isCorrect = Object.keys(correctAnswers).every(
-            (option) => correctAnswers[option as keyof typeof correctAnswers] === userResponses[option as keyof typeof userResponses]
-        );
+        Object.keys(correctAnswers).forEach((option) => {
+            const isCorrect = correctAnswers[option as keyof typeof correctAnswers];
+            const userSelected = !!userAnswers[option];
 
-        isCorrect ? toast.success('Respuesta correcta') : toast.error('Respuesta incorrecta');
+            if (userSelected) {
+                newFeedback[option] = isCorrect ? 'correct' : 'incorrect';
+            } else if (isCorrect) {
+                newFeedback[option] = 'correct'; // Marcar la correcta si no fue seleccionada
+            } else {
+                newFeedback[option] = null;
+            }
+        });
 
-        return isCorrect;
+        setFeedback(newFeedback);
+        setAnswered(true);
     };
 
     return (
         <div className="flex flex-col items-center justify-center w-full">
-            <Header/>
+            <Header />
             <main className="mt-4 w-full flex flex-col items-center justify-center px-2 py-2">
                 {error && <p className="text-red-500">{error}</p>}
 
@@ -120,7 +126,13 @@ export default function SpanishPage() {
                                 if (!optionText || !optionValue) return null; // Oculta opciones vacías
 
                                 return (
-                                    <label key={option} className="flex items-center space-x-3 p-3 rounded-md">
+                                    <label
+                                        key={option}
+                                        className={`flex items-center space-x-3 p-3 rounded-md border ${
+                                            feedback[option] === 'correct' ? 'rounded-4xl text-green-900' : 
+                                            feedback[option] === 'incorrect' ? 'rounded-4xl text-red-900' : 'bg-gray-900'
+                                        }`}
+                                    >
                                         <input
                                             type="checkbox"
                                             checked={!!userAnswers[option]}
@@ -130,11 +142,12 @@ export default function SpanishPage() {
                                                     [option]: !prev[option],
                                                 }))
                                             }
+                                            disabled={answered} // Deshabilitar después de responder
                                             className="w-5 h-5"
                                         />
-                                        <span className="font-medium">
-                                        {optionText}. {optionValue}
-                                    </span>
+                                        <span className="font-medium text-gray-100">
+                                            {optionText}. {optionValue}
+                                        </span>
                                     </label>
                                 );
                             })}
@@ -145,7 +158,6 @@ export default function SpanishPage() {
                 {/* Navegación entre preguntas */}
                 {question && (
                     <div className="flex justify-between mt-4 w-full max-w-lg absolute bottom-5 sm:items-start">
-
                         {/* Botón para pregunta anterior */}
                         <button
                             onClick={handlePreviousQuestion}
@@ -154,47 +166,36 @@ export default function SpanishPage() {
                                 currentIndex === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"
                             }`}
                         >
-                            <FontAwesomeIcon icon={faArrowLeft} className="text-white text-2xl"/>
+                            <FontAwesomeIcon icon={faArrowLeft} className="text-white text-2xl" />
                         </button>
 
                         {/* Indicador de Pregunta */}
                         <span className="text-lg font-bold flex items-center justify-center">
-                        {currentIndex + 1} / {questions.length}
-                    </span>
+                            {currentIndex + 1} / {questions.length}
+                        </span>
 
-                        {/* Botón para siguiente pregunta */}
+                        {/* Botón para validar y avanzar */}
                         <button
                             onClick={() => {
-                                const isCorrect = checkAnswers();
-                                if (isCorrect) {
-                                    setTimeout(() => handleNextQuestion(), 1000);
+                                if (!answered) {
+                                    checkAnswers();
+                                } else {
+                                    handleNextQuestion();
                                 }
                             }}
-                            disabled={currentIndex >= questions.length - 1}
                             className={`px-4 py-2 rounded w-12 h-12 flex items-center justify-center text-2xl ${
                                 currentIndex >= questions.length - 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"
                             }`}
                         >
-                            <FontAwesomeIcon icon={faArrowRight} className="text-white text-2xl"/>
+                            <FontAwesomeIcon icon={faArrowRight} className="text-white text-2xl" />
                         </button>
                     </div>
                 )}
 
                 {/* Loading spinner */}
-                {loading && <Loading/>}
-
-                {/* Toast notifications */}
-                <ToastContainer
-                    autoClose={1000}
-                    draggable={false}
-                    position="top-right"
-                    hideProgressBar={false}
-                    newestOnTop
-                    closeOnClick
-                    rtl={false}
-                    pauseOnHover
-                />
+                {loading && <Loading />}
             </main>
         </div>
     );
 }
+
