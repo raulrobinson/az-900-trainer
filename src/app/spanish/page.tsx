@@ -1,8 +1,8 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/app/components/Loading";
 import Header from "@/app/components/Header";
 
@@ -129,8 +129,8 @@ export default function SpanishPage() {
                                     <label
                                         key={option}
                                         className={`flex items-center space-x-3 p-3 rounded-md border ${
-                                            feedback[option] === 'correct' ? 'rounded-4xl text-green-900' : 
-                                            feedback[option] === 'incorrect' ? 'rounded-4xl text-red-900' : 'bg-gray-900'
+                                            feedback[option] === 'correct' ? 'rounded-4xl text-green-500' : 
+                                            feedback[option] === 'incorrect' ? 'rounded-4xl text-red-500' : 'bg-gray-900'
                                         }`}
                                     >
                                         <input
@@ -142,7 +142,7 @@ export default function SpanishPage() {
                                                     [option]: !prev[option],
                                                 }))
                                             }
-                                            disabled={answered} // Deshabilitar después de responder
+                                            //disabled={answered} // Deshabilitar después de responder
                                             className="w-5 h-5"
                                         />
                                         <span className="font-medium text-gray-100">
