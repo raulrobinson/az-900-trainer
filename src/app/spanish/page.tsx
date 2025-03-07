@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import {useEffect, useState} from 'react';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import {toast, ToastContainer} from "react-toastify";
 import Loading from "@/app/components/Loading";
+import Header from "@/app/components/Header";
 
 interface Question {
     id: number;
@@ -95,99 +96,100 @@ export default function SpanishPage() {
     };
 
     if (isLoading) {
-        return <Loading />;
+        return <Loading/>;
     }
 
     return (
-        <div className="flex flex-col items-center justify-center px-2 py-2">
-            <h1 className="text-2xl font-bold mb-4">Entrenador AZ-900</h1>
+        <div className="flex flex-col items-center justify-center w-full">
+            <Header/>
+            <main className="mt-4 w-full flex flex-col items-center justify-center px-2 py-2">
+                {error && <p className="text-red-500">{error}</p>}
 
-            {error && <p className="text-red-500">{ error }</p>}
+                {/* Pregunta */}
+                {question && (
+                    <div className="w-full max-w-lg border p-4 rounded shadow-lg">
+                        <p className="font-medium text-lg">{question.answer}</p>
 
-            {/* Pregunta */}
-            {question && (
-                <div className="w-full max-w-lg border p-4 rounded shadow-lg">
-                    <p className="font-medium text-lg">{ question.answer }</p>
+                        <div className="mt-4 space-y-3">
+                            {["a", "b", "c", "d"].map((option) => {
+                                const optionText = question[`p${option}` as keyof Question];
+                                const optionValue = question[`r${option}` as keyof Question];
 
-                    <div className="mt-4 space-y-3">
-                        {["a", "b", "c", "d"].map((option) => {
-                            const optionText = question[`p${option}` as keyof Question];
-                            const optionValue = question[`r${option}` as keyof Question];
+                                if (!optionText || !optionValue) return null; // Oculta opciones vacías
 
-                            if (!optionText || !optionValue) return null; // Oculta opciones vacías
-
-                            return (
-                                <label key={option} className="flex items-center space-x-3 p-3 rounded-md">
-                                    <input
-                                        type="checkbox"
-                                        checked={!!userAnswers[option]}
-                                        onChange={() =>
-                                            setUserAnswers((prev) => ({
-                                                ...prev,
-                                                [option]: !prev[option],
-                                            }))
-                                        }
-                                        className="w-5 h-5"
-                                    />
-                                    <span className="font-medium">
+                                return (
+                                    <label key={option} className="flex items-center space-x-3 p-3 rounded-md">
+                                        <input
+                                            type="checkbox"
+                                            checked={!!userAnswers[option]}
+                                            onChange={() =>
+                                                setUserAnswers((prev) => ({
+                                                    ...prev,
+                                                    [option]: !prev[option],
+                                                }))
+                                            }
+                                            className="w-5 h-5"
+                                        />
+                                        <span className="font-medium">
                                         {optionText}. {optionValue}
                                     </span>
-                                </label>
-                            );
-                        })}
+                                    </label>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {/* Navegación entre preguntas */}
-            {question && (
-                <div className="flex justify-between mt-4 w-full max-w-lg absolute bottom-5 sm:items-start">
+                {/* Navegación entre preguntas */}
+                {question && (
+                    <div className="flex justify-between mt-4 w-full max-w-lg absolute bottom-5 sm:items-start">
 
-                    {/* Botón para pregunta anterior */}
-                    <button
-                        onClick={ handlePreviousQuestion }
-                        disabled={ currentIndex === 0 }
-                        className={`px-4 py-2 rounded w-12 h-12 flex items-center justify-center text-2xl ${
-                            currentIndex === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"
-                        }`}
-                    >
-                        <FontAwesomeIcon icon={ faArrowLeft } className="text-white text-2xl"/>
-                    </button>
+                        {/* Botón para pregunta anterior */}
+                        <button
+                            onClick={handlePreviousQuestion}
+                            disabled={currentIndex === 0}
+                            className={`px-4 py-2 rounded w-12 h-12 flex items-center justify-center text-2xl ${
+                                currentIndex === 0 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"
+                            }`}
+                        >
+                            <FontAwesomeIcon icon={faArrowLeft} className="text-white text-2xl"/>
+                        </button>
 
-                    {/* Indicador de Pregunta */}
-                    <span className="text-lg font-bold flex items-center justify-center">
-                        {currentIndex + 1} / { questions.length }
+                        {/* Indicador de Pregunta */}
+                        <span className="text-lg font-bold flex items-center justify-center">
+                        {currentIndex + 1} / {questions.length}
                     </span>
 
-                    {/* Botón para siguiente pregunta */}
-                    <button
-                        onClick={() => {
-                            const isCorrect = checkAnswers();
-                            if (isCorrect) {
-                                setTimeout(() => handleNextQuestion(), 1000);
-                            }
-                        }}
-                        disabled={ currentIndex >= questions.length - 1 }
-                        className={`px-4 py-2 rounded w-12 h-12 flex items-center justify-center text-2xl ${
-                            currentIndex >= questions.length - 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"
-                        }`}
-                    >
-                        <FontAwesomeIcon icon={ faArrowRight } className="text-white text-2xl"/>
-                    </button>
-                </div>
-            )}
+                        {/* Botón para siguiente pregunta */}
+                        <button
+                            onClick={() => {
+                                const isCorrect = checkAnswers();
+                                if (isCorrect) {
+                                    setTimeout(() => handleNextQuestion(), 1000);
+                                }
+                            }}
+                            disabled={currentIndex >= questions.length - 1}
+                            className={`px-4 py-2 rounded w-12 h-12 flex items-center justify-center text-2xl ${
+                                currentIndex >= questions.length - 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white"
+                            }`}
+                        >
+                            <FontAwesomeIcon icon={faArrowRight} className="text-white text-2xl"/>
+                        </button>
+                    </div>
+                )}
 
-            {/* Toast notifications */}
-            <ToastContainer
-                autoClose={1000}
-                draggable={false}
-                position="top-right"
-                hideProgressBar={false}
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnHover
-            />
+                {/* Toast notifications */}
+                <ToastContainer
+                    autoClose={1000}
+                    draggable={false}
+                    position="top-right"
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnHover
+                />
+            </main>
         </div>
     );
 }
