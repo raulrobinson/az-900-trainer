@@ -66,10 +66,11 @@ export default function Header() {
 
 // Datos del menú con URLs
 const menuItems = [
-    { title: "Inicio", url: "/" },
+    { title: "Home", url: "/" },
     // { title: "Ingles", url: "/az900-english" },
-    { title: "Versiones", submenu: [
-            { label: "Ingles", url: "/english" },
+    { title: "Versions",
+        submenu: [
+            { label: "English", url: "/english" },
             { label: "Spanish", url: "/spanish" },
             // { label: "Desarrollo", url: "/servicios/desarrollo" },
             // { label: "SEO", url: "/servicios/seo" }
