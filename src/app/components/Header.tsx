@@ -70,7 +70,7 @@ const menuItems = [
     // { title: "Ingles", url: "/az900-english" },
     { title: "Versions",
         submenu: [
-            { label: "English", url: "/english" },
+            // { label: "English", url: "/english" },
             { label: "Spanish", url: "/spanish" },
             // { label: "Desarrollo", url: "/servicios/desarrollo" },
             // { label: "SEO", url: "/servicios/seo" }

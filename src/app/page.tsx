@@ -22,13 +22,13 @@ export default function QuizPage() {
 
             {/* Iconos de banderas */}
             <div className="flex space-x-6 mt-2">
-                <button
-                    onClick={ goToEnglishPage }
-                    className="flex flex-col items-center space-y-2 group"
-                >
-                    <Flag code="gb" className="w-30 h-26 rounded-lg shadow-lg group-hover:scale-110 transition" />
-                    <span className="text-gray-50 text-sm group-hover:text-gray-200">English</span>
-                </button>
+                {/*<button*/}
+                {/*    onClick={ goToEnglishPage }*/}
+                {/*    className="flex flex-col items-center space-y-2 group"*/}
+                {/*>*/}
+                {/*    <Flag code="gb" className="w-30 h-26 rounded-lg shadow-lg group-hover:scale-110 transition" />*/}
+                {/*    <span className="text-gray-50 text-sm group-hover:text-gray-200">English</span>*/}
+                {/*</button>*/}
                 <button
                     onClick={ goToSpanishPage }
                     className="flex flex-col items-center space-y-2 group"
