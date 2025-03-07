@@ -24,6 +24,11 @@ interface Question {
     d: boolean;
 }
 
+// Function to shuffle the array of questions
+const shuffleArray = (array: Question[]) => {
+    return array.sort(() => Math.random() - 0.5);
+};
+
 export default function SpanishPage() {
     const [question, setQuestion] = useState<Question | null>(null);
     const [loading, setLoading] = useState(true);
@@ -39,7 +44,8 @@ export default function SpanishPage() {
             try {
                 setIsLoading(true);
                 const response = await fetch('/api/answers-spanish');
-                const data: Question[] = await response.json();
+                let data: Question[] = await response.json();
+                data = shuffleArray(data);
                 setQuestions(data);
                 setQuestion(data[0]);
             } catch (err) {
