@@ -101,10 +101,6 @@ export default function SpanishPage() {
         return isCorrect;
     };
 
-    if (isLoading) {
-        return <Loading/>;
-    }
-
     return (
         <div className="flex flex-col items-center justify-center w-full">
             <Header/>
@@ -183,6 +179,9 @@ export default function SpanishPage() {
                         </button>
                     </div>
                 )}
+
+                {/* Loading spinner */}
+                {loading && isLoading && <Loading/>}
 
                 {/* Toast notifications */}
                 <ToastContainer
