@@ -143,7 +143,7 @@ export default function EnglishPage() {
 
                 {/* Navegación entre preguntas */}
                 {question && (
-                    <div className="flex justify-between mt-4 w-full max-w-lg absolute bottom-20 sm:items-start">
+                    <div className="flex justify-between mt-4 w-full max-w-lg absolute bottom-5 sm:items-start">
 
                         {/* Botón para pregunta anterior */}
                         <button
