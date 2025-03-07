@@ -181,7 +181,7 @@ export default function SpanishPage() {
                 )}
 
                 {/* Loading spinner */}
-                {loading && isLoading && <Loading/>}
+                {loading && <Loading/>}
 
                 {/* Toast notifications */}
                 <ToastContainer
