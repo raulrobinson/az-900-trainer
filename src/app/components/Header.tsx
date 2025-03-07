@@ -16,7 +16,9 @@ export default function Header() {
     return (
         <header className="w-full bg-blue-600 text-white p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-xl font-bold">Entrenador AZ-900</h1>
+                <div>
+                    <a href="/" className="text-xl font-bold">Entrenador AZ-900</a>
+                </div>
 
                 {/* Botón de menú para móviles */}
                 <button onClick={toggleMenu} className="lg:hidden">
