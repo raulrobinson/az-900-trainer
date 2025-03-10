@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(200).json(rows);
         } else {
             console.error('answers not found');
-            return res.status(400).json({ message: 'answers not found' });
+            return res.status(201).json({ message: 'answers not found' });
         }
 
     } catch (error) {

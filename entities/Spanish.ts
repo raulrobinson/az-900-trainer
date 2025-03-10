@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("az_900_answers_spanish_new", { schema: "azure_training", synchronize: false })
+@Entity("az_900_answers_spanish_upd", { schema: "azure_training", synchronize: false })
 export class Spanish {
     @PrimaryGeneratedColumn()
     id!: number;

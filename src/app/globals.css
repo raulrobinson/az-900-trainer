@@ -28,3 +28,22 @@ body {
   color: var(--foreground);
   font-family: 'Roboto Regular', Helvetica, sans-serif;
 }
+
+.markdown-container {
+  white-space: pre-wrap;
+  /*word-wrap: break-word;*/
+}
+
+.markdown-container ol {
+  list-style-type: decimal;
+  padding-left: 2rem; /* Ajusta la sangría según necesites */
+}
+
+.markdown-container ol li {
+  /*margin-bottom: 0.5rem; !* Espacio entre los elementos de la lista *!*/
+  /*padding-left: 0.5rem;*/
+  /*text-indent: -0.5rem;*/
+}
+
+
+

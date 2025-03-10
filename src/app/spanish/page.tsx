@@ -432,6 +432,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/app/components/Loading";
 import Header from "@/app/components/Header";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from "remark-gfm";
 
 interface Question {
     id: number;
@@ -551,7 +553,7 @@ export default function SpanishPage() {
                 {/* Pregunta */}
                 {question && (
                     <div className="w-full max-w-lg border p-4 rounded shadow-lg bg-gray-800 text-white">
-                        <p className="font-medium text-lg">{question.answer}</p>
+                        <p className="font-medium text-lg whitespace-pre-line">{question.answer}</p>
 
                         <div className="mt-4 space-y-3">
                             {["a", "b", "c", "d"].map((option) => {
@@ -625,6 +627,7 @@ export default function SpanishPage() {
                     </div>
                 )}
 
+                {/* Loading spinner */}
                 {loading && <Loading />}
             </main>
 
@@ -632,9 +635,32 @@ export default function SpanishPage() {
             {modalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center mx-2">
                     <div className="bg-white p-6 rounded-lg max-w-2xl w-full text-black">
-                        <h2 className="text-xl font-bold mb-4">Explicación</h2>
-                        <p>{modalContent}</p>
-                        <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded" onClick={() => setModalOpen(false)}>Cerrar</button>
+                        <h2 className="text-xl font-bold mb-4">Explicación: </h2>
+                        {/*<ReactMarkdown remarkPlugins={[remarkGfm]}>{modalContent}</ReactMarkdown>*/}
+                        {/*<p className="whitespace-pre-line">*/}
+                        {/*    /!*{modalContent}*!/*/}
+                        {/*    */}
+                        {/*</p>*/}
+                        <div className="markdown-container">
+                            <ReactMarkdown
+                                components={{
+                                    a: ({ node, ...props }) => (
+                                        <a {...props} target="_blank" rel="noopener noreferrer">
+                                            {props.children}
+                                        </a>
+                                    ),
+                                }}
+                                remarkPlugins={[remarkGfm]}
+                            >
+                                {modalContent}
+                            </ReactMarkdown>
+                        </div>
+                        <button
+                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                            onClick={() => setModalOpen(false)}
+                        >
+                            Cerrar
+                        </button>
                     </div>
                 </div>
             )}
